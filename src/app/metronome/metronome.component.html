@@ -1,0 +1,7 @@
+<p>metronome works!</p>
+<button (click)="playSound(audioContext, audioContext.currentTime)">Play Sound.</button>
+<input type="range" name="tempoSlider" [(ngModel)]="beatsPerMinute"  min="40" max="360">
+<p>BPM: {{beatsPerMinute}}</p>
+<button (click)="togglePlay()">Toggle Play: {{isPlaying}}</button>
+<p>Seconds Elapsed: {{(currentTimeInSeconds.toFixed(3))}}</p>
+<p>Current Beat: {{currentBeat}}</p>
