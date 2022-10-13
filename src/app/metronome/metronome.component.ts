@@ -10,7 +10,7 @@ import { AudiocontextService } from '../service/audiocontext.service';
 export class MetronomeComponent implements OnInit {
   beatsPerMinute:number = 120;
   isPlaying = false;
-  scheduleInterval = 100; //the scheduling rate in ms
+  scheduleInterval = 25; //the scheduling rate in ms
   intervalID:NodeJS.Timer|null = null;
   audioContext!:AudioContext;
 
@@ -25,6 +25,7 @@ export class MetronomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.audioContext = this.ac.ac;
+    console.log(this.ac.isPlaying);
   }
 
   startScheduler():void {
@@ -32,22 +33,9 @@ export class MetronomeComponent implements OnInit {
       this.startTime = this.audioContext.currentTime;
 
       this.intervalID = setInterval(() => {
-        let beatsPerSecond:number = (this.beatsPerMinute/60);
-        let secondsPerBeat:number = 1/beatsPerSecond;
-
-        let timeSinceLastBeat:number = ((this.audioContext.currentTime - this.startTime) % secondsPerBeat);
-        let nextClick:number = this.audioContext.currentTime + (secondsPerBeat - timeSinceLastBeat);
-
-        this.currentTimeInSeconds = (this.audioContext.currentTime-this.startTime);
-
-        if (nextClick != this.nextNote) {
-          this.playSound(this.audioContext,nextClick);
-          this.currentBeat += 1;
-          this.nextNote = nextClick;
-        }
-        console.log(nextClick)
-
-        console.log("Scheduler fire.");
+        
+        this.update(this.audioContext.currentTime-this.startTime);
+        // console.log("Scheduler fire.");
       }, this.scheduleInterval);
     }
     else {console.log("Error, there appears to be another Scheduler running.")}
@@ -59,6 +47,20 @@ export class MetronomeComponent implements OnInit {
       this.intervalID = null;
     }
   }
+
+  update(timeElapsed:number){
+
+    let timePerBeat:number = 60/this.beatsPerMinute
+
+    let beatsElapsed:number = timeElapsed/timePerBeat
+    this.currentBeat = Math.floor(beatsElapsed);
+    this.currentTimeInSeconds = timeElapsed;
+
+    // console.log(timeElapsed);
+
+  }
+
+
 
   togglePlay():void {
     if (!this.isPlaying) {

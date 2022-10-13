@@ -5,11 +5,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { MetronomeComponent } from './metronome/metronome.component';
 import { AudiocontextService } from './service/audiocontext.service';
+import { VisualizationComponent } from './visualization/visualization.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MetronomeComponent
+    MetronomeComponent,
+    VisualizationComponent
   ],
   imports: [
     BrowserModule,

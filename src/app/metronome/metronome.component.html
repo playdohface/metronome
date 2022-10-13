@@ -5,3 +5,5 @@
 <button (click)="togglePlay()">Toggle Play: {{isPlaying}}</button>
 <p>Seconds Elapsed: {{(currentTimeInSeconds.toFixed(3))}}</p>
 <p>Current Beat: {{currentBeat}}</p>
+
+<app-visualization [currentValue]="currentBeat%2"></app-visualization>
