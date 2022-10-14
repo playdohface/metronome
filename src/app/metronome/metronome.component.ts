@@ -65,11 +65,11 @@ export class MetronomeComponent implements OnInit {
   togglePlay():void {
     if (!this.isPlaying) {
       this.startScheduler();
-      this.isPlaying = !this.isPlaying;
+      this.isPlaying = true;
     }
     else {
       this.stopScheduler();
-      this.isPlaying = !this.isPlaying;
+      this.isPlaying = false;
     }
   }
 

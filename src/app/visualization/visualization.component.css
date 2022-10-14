@@ -1,3 +1,16 @@
-#canvas {
+canvas {
     border: 1px solid black;
 }
+
+.container {
+    border: 1px solid black;
+    height: 50px;
+    width: 400px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    
+}
+ button {
+    width:100%;
+ }

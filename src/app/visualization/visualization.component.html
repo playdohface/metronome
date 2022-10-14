@@ -1,3 +1,8 @@
 <p>{{currentValue}}</p>
-<input type="range" [ngModel] = "currentValue" name="vis" min="0" max="1">
+
 <canvas #canvas></canvas>
+
+<div class="container">
+    <button *ngFor="let i of buttons; index as index" (click) = "buttonHandler(index)"></button>
+
+</div>
