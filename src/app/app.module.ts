@@ -6,12 +6,15 @@ import { AppComponent } from './app.component';
 import { MetronomeComponent } from './metronome/metronome.component';
 import { AudiocontextService } from './service/audiocontext.service';
 import { VisualizationComponent } from './visualization/visualization.component';
+import { LaneViewDirective } from './directive/lane-view.directive';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MetronomeComponent,
-    VisualizationComponent
+    VisualizationComponent,
+    LaneViewDirective
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, OnChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { AudiocontextService } from '../service/audiocontext.service';
 
 @Component({
   selector: 'app-visualization',
@@ -6,40 +7,56 @@ import { Component, Input, OnInit, ViewChild, ElementRef, OnChanges } from '@ang
   styleUrls: ['./visualization.component.css']
 })
 export class VisualizationComponent implements OnInit, OnChanges {
-   @Input() currentValue = 0;
-   subdivisions = 17; 
-   buttons: Boolean[] = [];
+  currentValue = 0;
+  @Input() subdivisions!:number;
 
-   @ViewChild('canvas', { static: true }) 
-   canvas!: ElementRef<HTMLCanvasElement>;  
-   ctx!:CanvasRenderingContext2D|null; 
-  constructor() {
+  @Output() buttonStates:EventEmitter<boolean[]> = new EventEmitter<boolean[]>;
+
+
+  buttons = [{"active" : false, "current" : false}];
+
+  constructor(private ac:AudiocontextService) {
+    
+    
+  }
+
+  ngOnInit(): void {      
     this.makeButtons();
+    this.ac.currentBeat.subscribe((value) => {
+      this.currentValue = value;
+      this.updateButtons();
+    });
   }
 
-  ngOnInit(): void {
-    
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-   
+  ngOnChanges(): void { 
   }
 
-  ngOnChanges(): void {
-    this.ctx?.clearRect(0,0,this.canvas.nativeElement.width,this.canvas.nativeElement.height);
-    this.ctx?.fillRect(this.currentValue*50,0,50,50);
+  ngOnDestroy(){
+    this.ac.currentBeat.unsubscribe();
 
-    
+  }
+
+  updateButtons():void{
+    this.buttons.forEach ((button) => button['current'] = false);
+    this.buttons[this.currentValue%this.subdivisions]["current"] = true;
 
   }
 
   makeButtons(){
     for (let i = 0; i < this.subdivisions; i++ )
     {
-      this.buttons[i] = false;
+      this.buttons[i] = {"active":false, "current":false}
     }
   }
 
   buttonHandler(id:number) {
-    console.log(id);
+    this.buttons[id]["active"] = !this.buttons[id]["active"] ;
+    let newButtonStates:boolean[] = [];
+    for ( let button of this.buttons) {
+      newButtonStates = newButtonStates.concat([button["active"]]);
+    }
+    this.buttonStates.emit(newButtonStates);
+    
   }
   
 

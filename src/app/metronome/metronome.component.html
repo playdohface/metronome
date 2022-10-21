@@ -1,9 +1,16 @@
 <p>metronome works!</p>
 <button (click)="playSound(audioContext, audioContext.currentTime)">Play Sound.</button>
-<input type="range" name="tempoSlider" [(ngModel)]="beatsPerMinute"  min="40" max="360">
-<p>BPM: {{beatsPerMinute}}</p>
-<button (click)="togglePlay()">Toggle Play: {{isPlaying}}</button>
-<p>Seconds Elapsed: {{(currentTimeInSeconds.toFixed(3))}}</p>
-<p>Current Beat: {{currentBeat}}</p>
+<input type="range" name="tempoSlider" [ngModel]="ac.beatsPerMinute"  min="40" max="360">
+<p>BPM: {{ac.beatsPerMinute}}</p>
 
-<app-visualization [currentValue]="currentBeat%2"></app-visualization>
+<button (click)="ac.togglePlay()">Toggle Play: {{ac.isPlaying}}</button>
+<!-- <p>Seconds Elapsed: {{ ac.timeElapsed.toFixed(3) }}</p> -->
+<p>Current Beat: {{ currentBeat }}</p>
+
+
+<button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button><input type="number" #newLaneSubdiv>
+
+<div #laneContainer></div>
+<app-visualization [subdivisions]="6" (buttonStates)="registerSoundEvents($event)"></app-visualization>
+
+<ng-template laneView></ng-template>

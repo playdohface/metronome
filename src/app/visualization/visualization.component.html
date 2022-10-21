@@ -1,8 +1,6 @@
 <p>{{currentValue}}</p>
 
-<canvas #canvas></canvas>
-
 <div class="container">
-    <button *ngFor="let i of buttons; index as index" (click) = "buttonHandler(index)"></button>
+    <button *ngFor="let b of buttons; index as i" (click) = "buttonHandler(i)" [ngClass]="buttons[i]"></button>
 
 </div>

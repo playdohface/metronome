@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { AudiocontextService } from '../service/audiocontext.service';
-
+import { Beep } from '../class/beep';
+import { SoundEvent } from '../sound-event';
+import { LaneViewDirective } from '../directive/lane-view.directive';
+import { VisualizationComponent } from '../visualization/visualization.component';
 
 @Component({
   selector: 'app-metronome',
@@ -8,10 +11,9 @@ import { AudiocontextService } from '../service/audiocontext.service';
   styleUrls: ['./metronome.component.css']
 })
 export class MetronomeComponent implements OnInit {
-  beatsPerMinute:number = 120;
-  isPlaying = false;
-  scheduleInterval = 25; //the scheduling rate in ms
-  intervalID:NodeJS.Timer|null = null;
+  @ViewChild(LaneViewDirective, {static: true}) laneViews!: LaneViewDirective;
+
+
   audioContext!:AudioContext;
 
   currentTimeInSeconds = 0;
@@ -21,76 +23,49 @@ export class MetronomeComponent implements OnInit {
 
   startTime = 0;
 
-  constructor(private ac:AudiocontextService) { }
+  gainControl:GainNode;
+
+  beep:Beep;
+
+  constructor(public ac:AudiocontextService) { 
+    
+    this.audioContext = ac.audioContext;
+    this.gainControl = this.audioContext.createGain();
+    this.gainControl.gain.setValueAtTime(0.5,0);
+    this.gainControl.connect(this.audioContext.destination);
+    this.beep = new Beep(this.audioContext, this.gainControl, 300, 0.2);
+    ac.currentBeat.subscribe((value) => this.currentBeat = value )
+  }
 
   ngOnInit(): void {
-    this.audioContext = this.ac.ac;
-    console.log(this.ac.isPlaying);
+    this.audioContext = this.ac.audioContext;
+    this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,1,4));
+
+    
+  
   }
 
-  startScheduler():void {
-    if(!this.intervalID){
-      this.startTime = this.audioContext.currentTime;
-
-      this.intervalID = setInterval(() => {
-        
-        this.update(this.audioContext.currentTime-this.startTime);
-        // console.log("Scheduler fire.");
-      }, this.scheduleInterval);
-    }
-    else {console.log("Error, there appears to be another Scheduler running.")}
+  registerSoundEvents(event:boolean[]):void{
+    console.log(event);
   }
 
-  stopScheduler():void {
-    if(this.intervalID) {
-      clearInterval(this.intervalID);
-      this.intervalID = null;
-    }
-  }
+  addNewLane(subdivs:string){
+    console.log(`Adding new lane with ${subdivs} subdivisions.`)
+    let subdivsnum = parseInt(subdivs);
+    const viewContainerRef = this.laneViews.viewContainerRef;
+    const componentRef = viewContainerRef.createComponent(VisualizationComponent);
+    componentRef.instance.subdivisions = subdivsnum;
+    
+    
+    componentRef.instance.buttonStates.subscribe((e) => this.registerSoundEvents(e));
 
-  update(timeElapsed:number){
-
-    let timePerBeat:number = 60/this.beatsPerMinute
-
-    let beatsElapsed:number = timeElapsed/timePerBeat
-    this.currentBeat = Math.floor(beatsElapsed);
-    this.currentTimeInSeconds = timeElapsed;
-
-    // console.log(timeElapsed);
-
-  }
-
-
-
-  togglePlay():void {
-    if (!this.isPlaying) {
-      this.startScheduler();
-      this.isPlaying = true;
-    }
-    else {
-      this.stopScheduler();
-      this.isPlaying = false;
-    }
   }
 
   playSound(aCtx:AudioContext, when:number):void{
     console.log("Play Sound.")
-    const primaryGainControl = aCtx.createGain();
-    primaryGainControl.gain.setValueAtTime(0.5,when);
-    primaryGainControl.connect(aCtx.destination);
-
-    
-
-    const kickOscillator = aCtx.createOscillator();
-    kickOscillator.frequency.setValueAtTime(220,0);
-    kickOscillator.connect(primaryGainControl);
-    kickOscillator.start(when);
-    kickOscillator.stop(when + 0.1);
+    this.beep.play(this.audioContext.currentTime);
   
   }
 
-  setTempo(event:Event){
-    console.log(event);
-  }
 
 }
