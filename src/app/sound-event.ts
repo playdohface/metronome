@@ -3,9 +3,19 @@ import { Sound } from "./sound";
 export class SoundEvent {
     constructor(
         private _id:string,
-        public sound:Sound,
-        public beat:number,
-        public repeat?:number ){};
+        private _sound:Sound,
+        private _timeInLoop:number
+        ){};
     
-        public get id() {return this._id}
+        public get id() {
+            return this._id
+        }
+
+        public get sound() {
+            return this._sound
+        }
+
+        public get timeInLoop(){
+            return this._timeInLoop;
+        }
 }

@@ -4,6 +4,7 @@ import { Beep } from '../class/beep';
 import { SoundEvent } from '../sound-event';
 import { LaneViewDirective } from '../directive/lane-view.directive';
 import { VisualizationComponent } from '../visualization/visualization.component';
+import { AudioEngineService } from '../service/audio-engine.service';
 
 @Component({
   selector: 'app-metronome',
@@ -23,23 +24,21 @@ export class MetronomeComponent implements OnInit {
 
   startTime = 0;
 
-  gainControl:GainNode;
+
 
   beep:Beep;
 
-  constructor(public ac:AudiocontextService) { 
+  constructor(public ac:AudioEngineService) { 
     
     this.audioContext = ac.audioContext;
-    this.gainControl = this.audioContext.createGain();
-    this.gainControl.gain.setValueAtTime(0.5,0);
-    this.gainControl.connect(this.audioContext.destination);
-    this.beep = new Beep(this.audioContext, this.gainControl, 300, 0.2);
-    ac.currentBeat.subscribe((value) => this.currentBeat = value )
+
+    this.beep = new Beep(this.audioContext, this.ac.mainOut, 300, 0.2);
+    //ac.currentBeat.subscribe((value) => this.currentBeat = value )
   }
 
   ngOnInit(): void {
     this.audioContext = this.ac.audioContext;
-    this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,1,4));
+    this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,0));
 
     
   
@@ -57,7 +56,7 @@ export class MetronomeComponent implements OnInit {
     componentRef.instance.subdivisions = subdivsnum;
     
     
-    componentRef.instance.buttonStates.subscribe((e) => this.registerSoundEvents(e));
+    //componentRef.instance.buttonStates.subscribe((e) => this.registerSoundEvents(e));
 
   }
 
