@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PlayQueueService } from './play-queue.service';
+import { SoundProviderService } from './sound-provider.service';
 
-describe('PlayQueueService', () => {
-  let service: PlayQueueService;
+describe('SoundProviderService', () => {
+  let service: SoundProviderService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PlayQueueService);
+    service = TestBed.inject(SoundProviderService);
   });
 
   it('should be created', () => {

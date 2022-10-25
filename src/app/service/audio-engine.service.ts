@@ -60,9 +60,6 @@ export class AudioEngineService {
   }
 
   private _update():void {
-
-    console.log(this._audioContext.currentTime + " - currentTime")
-    
     // this is where all the code goes that is executed each frame
     if (this._lastLoopScheduled <= this.loopCount) {
 

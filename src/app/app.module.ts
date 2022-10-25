@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { MetronomeComponent } from './metronome/metronome.component';
-import { AudiocontextService } from './service/audiocontext.service';
+
 import { VisualizationComponent } from './visualization/visualization.component';
 import { LaneViewDirective } from './directive/lane-view.directive';
 import { ClickLaneComponent } from './component/click-lane/click-lane.component';
 import { AudioEngineService } from './service/audio-engine.service';
+import { SoundProviderService } from './service/sound-provider.service';
 
 
 @NgModule({
@@ -21,9 +22,10 @@ import { AudioEngineService } from './service/audio-engine.service';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [AudiocontextService, AudioEngineService],
+  providers: [AudioEngineService, SoundProviderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

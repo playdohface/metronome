@@ -1,8 +1,12 @@
 import { Component, Input, OnInit, ViewChild, ElementRef, OnChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Beep } from '../class/beep';
+import { Sound } from '../sound';
 import { AudioEngineService } from '../service/audio-engine.service';
 import { SoundEvent } from '../sound-event';
 import { v4 } from 'uuid';
+import { SoundProviderService } from '../service/sound-provider.service';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-visualization',
@@ -12,21 +16,37 @@ import { v4 } from 'uuid';
 export class VisualizationComponent implements OnInit, OnChanges {
   currentValue = 0;
   @Input() subdivisions!:number;
+  public soundChoice = new FormGroup({
+    soundSelect: new FormControl()
+  })
   
-  private _sound = new Beep(this.ac.audioContext, this.ac.mainOut,440,0.2 );
+  
+  private _sound!:Sound;
   private _globalId = v4();
+
+  
+
+
   
 
 
   buttons = [{"active" : false, "current" : false}];
 
-  constructor(private ac:AudioEngineService) {
-    
-    
-  }
+  constructor(
+    private ac:AudioEngineService,
+    public s:SoundProviderService
+    ) {} 
+  
 
   ngOnInit(): void {      
     this.makeButtons();
+    this.soundChoice.valueChanges.subscribe((newVal) => {
+      console.log(newVal.soundSelect);
+      this.selectSound(newVal.soundSelect);
+
+    })
+    
+   
     // this.ac.currentBeat.subscribe((value) => {
     //   this.currentValue = value; 
     //   this.updateButtons();
@@ -34,11 +54,24 @@ export class VisualizationComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void { 
+    
   }
 
   ngOnDestroy(){
     // this.ac.currentBeat.unsubscribe();
 
+  }
+
+  public selectSound(newSound:Sound){
+    this._sound = newSound;
+    for (let i = 0; i < this.buttons.length; i++) {
+      if (this.buttons[i]['active'] === true) {
+        this.ac.removeSoundEvent(this._getButtonId(i));
+        let newSound = new SoundEvent(this._getButtonId(i), this._sound! ,i/this.subdivisions);
+        this.ac.addSoundEvent(newSound);
+      }
+
+    }
   }
 
   updateButtons():void{
@@ -61,7 +94,7 @@ export class VisualizationComponent implements OnInit, OnChanges {
   buttonHandler(id:number) {
     if (this.buttons[id]["active"] === false) {
       this.buttons[id]["active"] = true;
-      let newSound = new SoundEvent(this._getButtonId(id), this._sound,id/this.subdivisions);
+      let newSound = new SoundEvent(this._getButtonId(id), this._sound! ,id/this.subdivisions);
       this.ac.addSoundEvent(newSound);
 
     } else {

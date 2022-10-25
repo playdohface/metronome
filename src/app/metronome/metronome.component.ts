@@ -1,5 +1,4 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { AudiocontextService } from '../service/audiocontext.service';
 import { Beep } from '../class/beep';
 import { SoundEvent } from '../sound-event';
 import { LaneViewDirective } from '../directive/lane-view.directive';

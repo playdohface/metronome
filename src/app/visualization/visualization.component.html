@@ -1,6 +1,14 @@
-<p>{{currentValue}}</p>
-
 <div class="container">
-    <button *ngFor="let b of buttons; index as i" (click) = "buttonHandler(i)" [ngClass]="buttons[i]"></button>
-
+    <div class="buttons">
+        <button *ngFor="let b of buttons; index as i" (click) = "buttonHandler(i)" [ngClass]="buttons[i]"></button>
+    </div>
+    <div [formGroup] = "soundChoice" class="soundchoice">
+        
+        <select formControlName="soundSelect">
+            <option *ngFor="let sound of s.soundList" [ngValue]="sound" >{{sound.name}}</option>
+        </select>
+        
+    
+    </div>
 </div>
+
