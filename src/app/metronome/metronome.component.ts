@@ -53,6 +53,11 @@ export class MetronomeComponent implements OnInit {
     const viewContainerRef = this.laneViews.viewContainerRef;
     const componentRef = viewContainerRef.createComponent(VisualizationComponent);
     componentRef.instance.subdivisions = subdivsnum;
+    componentRef.instance.delete$.subscribe((e) => {
+      if (e) {
+        componentRef.destroy();
+      }
+    })
     
     
     //componentRef.instance.buttonStates.subscribe((e) => this.registerSoundEvents(e));

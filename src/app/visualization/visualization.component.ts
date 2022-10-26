@@ -14,20 +14,20 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./visualization.component.css']
 })
 export class VisualizationComponent implements OnInit, OnChanges {
-  currentValue = 0;
+
   @Input() subdivisions!:number;
+  @Output() delete$ = new EventEmitter<boolean>();
+
   public soundChoice = new FormGroup({
     soundSelect: new FormControl()
   })
+
+
   
-  
-  private _sound!:Sound;
+  private _sound:Sound;
+  private _soundList: Sound[];
   private _globalId = v4();
-
-  
-
-
-  
+  private _volumeNode:GainNode;
 
 
   buttons = [{"active" : false, "current" : false}];
@@ -35,52 +35,62 @@ export class VisualizationComponent implements OnInit, OnChanges {
   constructor(
     private ac:AudioEngineService,
     public s:SoundProviderService
-    ) {} 
+    ) {     
+      this._volumeNode = this.ac.audioContext.createGain();
+      this._volumeNode.gain.setValueAtTime(0.5,0);
+      this._volumeNode.connect(this.ac.mainOut);
+
+      this._soundList = this.s.makeSoundInstances();
+      this._sound = this._soundList[0];
+      this._sound.outputNode = this._volumeNode;     
+    } 
+
+    public get soundList(){
+      return this._soundList;
+    }
   
 
   ngOnInit(): void {      
-    this.makeButtons();
+    this.makeButtons();   
     this.soundChoice.valueChanges.subscribe((newVal) => {
       console.log(newVal.soundSelect);
       this.selectSound(newVal.soundSelect);
-
-    })
+    });
     
-   
-    // this.ac.currentBeat.subscribe((value) => {
-    //   this.currentValue = value; 
-    //   this.updateButtons();
-    // });
+    this.soundChoice.setValue({soundSelect: this._sound}); 
   }
 
-  ngOnChanges(): void { 
-    
+  ngOnChanges(): void {   
   }
 
-  ngOnDestroy(){
-    // this.ac.currentBeat.unsubscribe();
-
+  ngOnDestroy(){   
   }
 
-  public selectSound(newSound:Sound){
+  public deleteMe():void {
+    for (let i = 0; i < this.buttons.length; i++) {
+      this.ac.removeSoundEvent(this._getButtonId(i));
+    }
+    this.delete$.emit(true);
+  }
+
+  public setVolume(newVolume:string):void{
+    this._volumeNode.gain.setValueAtTime(parseInt(newVolume)/100,0);
+  }
+
+  public selectSound(newSound:Sound):void{
     this._sound = newSound;
+    this._sound.outputNode = this._volumeNode;
+
     for (let i = 0; i < this.buttons.length; i++) {
       if (this.buttons[i]['active'] === true) {
         this.ac.removeSoundEvent(this._getButtonId(i));
-        let newSound = new SoundEvent(this._getButtonId(i), this._sound! ,i/this.subdivisions);
-        this.ac.addSoundEvent(newSound);
+        let newSoundEvent = new SoundEvent(this._getButtonId(i), this._sound ,i/this.subdivisions);
+        this.ac.addSoundEvent(newSoundEvent);
       }
-
     }
   }
 
-  updateButtons():void{
-    this.buttons.forEach ((button) => button['current'] = false);
-    this.buttons[this.currentValue%this.subdivisions]["current"] = true;
-
-  }
-
-  makeButtons(){
+  makeButtons():void{
     for (let i = 0; i < this.subdivisions; i++ )
     {
       this.buttons[i] = {"active":false, "current":false}
@@ -91,7 +101,7 @@ export class VisualizationComponent implements OnInit, OnChanges {
     return this._globalId + "_" + id.toString();
   }
 
-  buttonHandler(id:number) {
+  buttonHandler(id:number):void {
     if (this.buttons[id]["active"] === false) {
       this.buttons[id]["active"] = true;
       let newSound = new SoundEvent(this._getButtonId(id), this._sound! ,id/this.subdivisions);
@@ -100,13 +110,6 @@ export class VisualizationComponent implements OnInit, OnChanges {
     } else {
       this.buttons[id]["active"] = false;
       this.ac.removeSoundEvent(this._getButtonId(id));
-    }
-    
-    
-    
-    
+    }    
   }
-  
-
-
 }

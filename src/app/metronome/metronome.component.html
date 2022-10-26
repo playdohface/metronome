@@ -7,9 +7,9 @@
 <p>Current Beat: {{ currentBeat }}</p>
 
 
-<button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button><input type="number" #newLaneSubdiv>
+<button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button><input type="number" min="1" #newLaneSubdiv>
 
 <div #laneContainer></div>
-<app-visualization [subdivisions]="6" ></app-visualization>
+
 
 <ng-template laneView></ng-template>

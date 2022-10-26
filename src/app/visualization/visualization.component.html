@@ -5,10 +5,11 @@
     <div [formGroup] = "soundChoice" class="soundchoice">
         
         <select formControlName="soundSelect">
-            <option *ngFor="let sound of s.soundList" [ngValue]="sound" >{{sound.name}}</option>
-        </select>
-        
-    
+            <option *ngFor="let sound of soundList" [ngValue]="sound" >{{sound.name}}</option>
+        </select> 
+        <input #volumeControl type="range" min="0" max="100" (change)="setVolume(volumeControl.value)">
+        <button (click)="deleteMe()">Delete Lane</button>  
     </div>
+    
 </div>
 
