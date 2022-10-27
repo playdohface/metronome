@@ -1,4 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
+
 import { SoundEvent } from '../sound-event';
 
 @Injectable({
@@ -19,10 +20,8 @@ export class AudioEngineService {
   private _mainVolume = 0.5;
 
 
-  private _fps:number = 2; //this is how often (in times per second) scheduling is run. 
+  private _fps:number = 30; //this is how often (in times per second) scheduling is run. 
   private _intervalID:NodeJS.Timeout|null = null;
-
-  private _lastLoopScheduled = -1;
 
   constructor(private ngZone:NgZone ) {
     this._audioContext = new AudioContext();
@@ -43,6 +42,8 @@ export class AudioEngineService {
     return this._loopTime;
   }
 
+  
+
   public get audioContext() {
     return this._audioContext;
   }
@@ -59,22 +60,28 @@ export class AudioEngineService {
     return this.timeElapsed - this._loopTime*this.loopCount;
   }
 
+  private get lookAhead():number{
+    return 2/this._fps; //lookahead in milliseconds should be larger than 1/fps to avoid scheduling errors.
+  }
+
   private _update():void {
     // this is where all the code goes that is executed each frame
-    if (this._lastLoopScheduled <= this.loopCount) {
+    
 
       this._soundEvents.forEach((soundEvent)=> {
-        soundEvent.sound.play(this._startTime + (this._lastLoopScheduled + 1) * this._loopTime + soundEvent.timeInLoop * this._loopTime);
-      })
-      this._lastLoopScheduled += 1;
-    }
-
+        let scheduleTime = this._startTime + this.loopCount*this._loopTime + soundEvent.timeInLoop*this._loopTime
+        if (soundEvent.lastLoop < this.loopCount && scheduleTime - this._audioContext.currentTime <= this.lookAhead){
+          soundEvent.sound.play(scheduleTime);
+          soundEvent.lastLoop = this.loopCount;
+        }
+         
+      })  
   }
 
   public play():void {
     this._startTime = this._audioContext.currentTime;
     this._isPlaying = true;
-    this._lastLoopScheduled = -1;
+
     this._update();
     this.ngZone.runOutsideAngular(()=> {
       this._intervalID = setInterval(() => {
@@ -89,6 +96,7 @@ export class AudioEngineService {
     this._intervalID = null;
     this._isPlaying = false;
     this._startTime = 0;
+    this._soundEvents.forEach((s)=> s.lastLoop = -1);
   }
 
   public togglePlay():void {
