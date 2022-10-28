@@ -5,21 +5,22 @@ export class Beep implements Sound {
     private _connections:AudioNode[];
     
     
-    constructor(private audioContext:AudioContext,
+    constructor(private _audioContext:AudioContext,
                 private _outputNode:AudioNode,
-                private frequency:number = 440,
-                private duration:number = 0.2,
-                private customname?:string ) {
+                private _frequency:number = 440,
+                private _duration:number = 0.2,
+                private _name?:string ) {
         
         
-        this.osc = audioContext.createOscillator()       
-        this.osc.frequency.setValueAtTime(frequency,0);
+        this.osc = _audioContext.createOscillator()       
+        this.osc.frequency.setValueAtTime(_frequency,0);
         this._connections = [this.osc];
         this._connectAll();
 
     }
+
     public get name():string {
-        return this.customname ? this.customname : "Beep at " + this.frequency.toString() + " Hz" 
+        return this._name ? this._name : "Beep at " + this._frequency.toString() + " Hz" 
     }
 
     public set outputNode(newOut: AudioNode) {
@@ -27,37 +28,26 @@ export class Beep implements Sound {
         this._reset();       
     }
 
-    
-
     play(startTime:number):void {
-
         this.osc.start(startTime);
-        this.osc.stop(startTime + this.duration);
+        this.osc.stop(startTime + this._duration);
         this._reset();
     }
 
-
     private _connectAll():void {
-        this._connections = [this.osc as AudioNode];
-        
+        this._connections = [this.osc as AudioNode];       
         for (let i = 0; i < this._connections.length; i++){
             if ( i == this._connections.length-1 ){
                 this._connections[i].connect(this._outputNode);
             } else {
                 this._connections[i].connect(this._connections[i+1]);
             }
-
         }
     }
 
     private _reset(){
-        console.log("Resetting from " + this._connections)
-        this.osc = this.audioContext.createOscillator()       
-        this.osc.frequency.setValueAtTime(this.frequency,0);
-        
+        this.osc = this._audioContext.createOscillator()       
+        this.osc.frequency.setValueAtTime(this._frequency,0);
         this._connectAll();
-
     }
-
-
 }

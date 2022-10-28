@@ -20,7 +20,7 @@ export class AudioEngineService {
   private _mainVolume = 0.5;
 
 
-  private _fps:number = 30; //this is how often (in times per second) scheduling is run. 
+  private _fps:number = 2; //this is how often (in times per second) scheduling is run. 
   private _intervalID:NodeJS.Timeout|null = null;
 
   constructor(private ngZone:NgZone ) {
@@ -70,9 +70,13 @@ export class AudioEngineService {
 
       this._soundEvents.forEach((soundEvent)=> {
         let scheduleTime = this._startTime + this.loopCount*this._loopTime + soundEvent.timeInLoop*this._loopTime
-        if (soundEvent.lastLoop < this.loopCount && scheduleTime - this._audioContext.currentTime <= this.lookAhead){
+        if (soundEvent.isPlayedInLoop(this.loopCount) && scheduleTime - this._audioContext.currentTime <= this.lookAhead){
           soundEvent.sound.play(scheduleTime);
           soundEvent.lastLoop = this.loopCount;
+        }
+        else if (soundEvent.isPlayedInLoop(this.loopCount + 1) && scheduleTime + this._loopTime - this._audioContext.currentTime <= this.lookAhead){
+          soundEvent.sound.play(scheduleTime + this.loopTime);
+          soundEvent.lastLoop = this.loopCount + 1;
         }
          
       })  
@@ -105,6 +109,9 @@ export class AudioEngineService {
   }
 
   public addSoundEvent(soundEvent:SoundEvent):void{
+    if (this._isPlaying){
+      soundEvent.lastLoop = this.loopCount;
+    }
     this._soundEvents.push(soundEvent);   
    }
 

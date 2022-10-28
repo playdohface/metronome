@@ -37,15 +37,10 @@ export class MetronomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.audioContext = this.ac.audioContext;
-    this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,0));
-
-    
-  
+    this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,0));  
   }
 
-  registerSoundEvents(event:boolean[]):void{
-    console.log(event);
-  }
+
 
   addNewLane(subdivs:string){
     console.log(`Adding new lane with ${subdivs} subdivisions.`)

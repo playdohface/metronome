@@ -7,7 +7,8 @@
         <select formControlName="soundSelect">
             <option *ngFor="let sound of soundList" [ngValue]="sound" >{{sound.name}}</option>
         </select> 
-        <input #volumeControl type="range" min="0" max="100" (change)="setVolume(volumeControl.value)">
+        Volume: <input #volumeControl type="range" min="0" max="100" (change)="setVolume(volumeControl.value)">
+        Play Every: <input formControlName = "playEvery">
         <button (click)="deleteMe()">Delete Lane</button>  
     </div>
     
