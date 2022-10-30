@@ -2,14 +2,16 @@
 <button (click)="playSound(audioContext, audioContext.currentTime)">Play Sound.</button>
 
 
-<button (click)="ac.togglePlay()">Toggle Play: {{ac.isPlaying}}</button>
-<!-- <p>Seconds Elapsed: {{ ac.timeElapsed.toFixed(3) }}</p> -->
-<p>Current Beat: {{ currentBeat }}</p>
+<button (click)="ac.togglePlay()">Toggle Play: {{ac.isPlaying}}</button><br>
+Main Volume:<input #mainVolume type="range" min="0" max="100" (change)="setVolume(mainVolume.value)" [value]="ac.mainVolume*100"><br>
+
+Bpm: {{ac.bpm}} <input #bpmSlider type="range" min="30" max="400" (change)="setBpm(bpmSlider.value)" [value]="ac.bpm"><br>
+
 
 
 <button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button><input type="number" min="1" #newLaneSubdiv>
 
-<div #laneContainer></div>
+<!-- <div #laneContainer></div> -->
 
 
 <ng-template laneView></ng-template>

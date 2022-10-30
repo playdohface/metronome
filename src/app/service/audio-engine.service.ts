@@ -20,7 +20,7 @@ export class AudioEngineService {
   private _mainVolume = 0.5;
 
 
-  private _fps:number = 2; //this is how often (in times per second) scheduling is run. 
+  private _fps:number = 30; //this is how often (in times per second) scheduling is run. 
   private _intervalID:NodeJS.Timeout|null = null;
 
   constructor(private ngZone:NgZone ) {
@@ -28,6 +28,28 @@ export class AudioEngineService {
     this._mainOut = this._audioContext.createGain();
     this._mainOut.gain.setValueAtTime(this._mainVolume,0);
     this._mainOut.connect(this.audioContext.destination);
+   }
+
+   public get bpm():number{
+    //assumes 4/4 and one beat to be one quarter note
+    return Math.floor(60*4/(this._loopTime))
+   }
+
+   public set bpm(newBpm:number){
+    this._loopTime = 60/(newBpm/4);
+    
+   }
+
+   public get mainVolume(){
+    return this._mainVolume;
+   }
+
+   public set mainVolume(newVolume:number){
+    if (newVolume < 0 || newVolume > 1) throw new Error("Volume must be between 0 and 1 inclusive.");
+    else {
+      this._mainVolume = newVolume;
+      this._mainOut.gain.setValueAtTime(this._mainVolume,0);
+    }
    }
 
    public get mainOut () {
@@ -41,8 +63,6 @@ export class AudioEngineService {
   public get loopTime(){
     return this._loopTime;
   }
-
-  
 
   public get audioContext() {
     return this._audioContext;
@@ -66,8 +86,6 @@ export class AudioEngineService {
 
   private _update():void {
     // this is where all the code goes that is executed each frame
-    
-
       this._soundEvents.forEach((soundEvent)=> {
         let scheduleTime = this._startTime + this.loopCount*this._loopTime + soundEvent.timeInLoop*this._loopTime
         if (soundEvent.isPlayedInLoop(this.loopCount) && scheduleTime - this._audioContext.currentTime <= this.lookAhead){
@@ -77,8 +95,7 @@ export class AudioEngineService {
         else if (soundEvent.isPlayedInLoop(this.loopCount + 1) && scheduleTime + this._loopTime - this._audioContext.currentTime <= this.lookAhead){
           soundEvent.sound.play(scheduleTime + this.loopTime);
           soundEvent.lastLoop = this.loopCount + 1;
-        }
-         
+        }        
       })  
   }
 
@@ -123,6 +140,4 @@ export class AudioEngineService {
       }
     }
    }
-
-
 }

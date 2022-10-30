@@ -38,9 +38,18 @@ export class MetronomeComponent implements OnInit {
   ngOnInit(): void {
     this.audioContext = this.ac.audioContext;
     this.ac.addSoundEvent(new SoundEvent("Hello",this.beep,0));  
+    
   }
 
+  setVolume(newVolume:string):void {
 
+    this.ac.mainVolume = parseInt(newVolume)/100;
+  }
+
+  setBpm(newBpm:string){
+    console.log(newBpm);
+    this.ac.bpm = parseInt(newBpm);
+  }
 
   addNewLane(subdivs:string){
     console.log(`Adding new lane with ${subdivs} subdivisions.`)
