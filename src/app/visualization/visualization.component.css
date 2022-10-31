@@ -1,8 +1,8 @@
 
 .buttons {
-    border: 1px solid black;
+    
     height: 50px;
-    width: 400px;
+    width: 100%;
     display: flex;
     align-items: stretch;
     justify-content: space-between;
@@ -12,6 +12,7 @@
     width:100%;
     border: 1px solid black;
     border-radius: 5px;
+    margin-right: 1px;;
     
  }
 

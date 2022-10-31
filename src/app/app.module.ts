@@ -7,9 +7,10 @@ import { MetronomeComponent } from './metronome/metronome.component';
 
 import { VisualizationComponent } from './visualization/visualization.component';
 import { LaneViewDirective } from './directive/lane-view.directive';
-import { ClickLaneComponent } from './component/click-lane/click-lane.component';
+
 import { AudioEngineService } from './service/audio-engine.service';
 import { SoundProviderService } from './service/sound-provider.service';
+import { TapTempoComponent } from './component/tap-tempo/tap-tempo.component';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { SoundProviderService } from './service/sound-provider.service';
     MetronomeComponent,
     VisualizationComponent,
     LaneViewDirective,
-    ClickLaneComponent
+    TapTempoComponent
   ],
   imports: [
     BrowserModule,

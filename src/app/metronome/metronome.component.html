@@ -1,16 +1,35 @@
-<p>metronome works!</p>
-<button (click)="playSound(audioContext, audioContext.currentTime)">Play Sound.</button>
+<h1>PolyMetronome</h1>
 
+<div class="playvolume">
+    <div class="playbutton">
+        <button (click)="ac.togglePlay()">
+            <span *ngIf="ac.isPlaying">Stop</span>
+            <span *ngIf="!ac.isPlaying">Play</span>
+        </button>
+    </div>
 
-<button (click)="ac.togglePlay()">Toggle Play: {{ac.isPlaying}}</button><br>
-Main Volume:<input #mainVolume type="range" min="0" max="100" (change)="setVolume(mainVolume.value)" [value]="ac.mainVolume*100"><br>
+    <div class="volumecontrol">
+    <div class = "volumelabel">Main Volume:
+        <span class = "volumeamount">{{ac.mainVolume*100}}%</span>
+    </div>
+    <input class="volumeslider" #mainVolume type="range" min="0" max="100" (change)="setVolume(mainVolume.value)" [value]="ac.mainVolume*100"><br>
+    </div>
+</div>
 
-Bpm: {{ac.bpm}} <input #bpmSlider type="range" min="30" max="400" (change)="setBpm(bpmSlider.value)" [value]="ac.bpm"><br>
+<div class="tempocontrol">
+    <app-tap-tempo (newTempo)="tapTempo($event)"></app-tap-tempo>
 
+    <div class="temposection">
+        <div class="tempolabel">Tempo: <span class="bpmamount">{{ac.bpm}} bpm</span></div>
+        <input #bpmSlider type="range" min="30" max="400" (change)="setBpm(bpmSlider.value)" [value]="ac.bpm">
+    </div>
 
+</div>
 
-<button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button><input type="number" min="1" #newLaneSubdiv>
-
+<div class="newlanecontrol">
+<button (click)="addNewLane(newLaneSubdiv.value)">Add New Lane</button>
+with <input type="number" min="1" #newLaneSubdiv> Subdivisions
+</div>
 <!-- <div #laneContainer></div> -->
 
 

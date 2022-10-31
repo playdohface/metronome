@@ -1,0 +1,53 @@
+h1 {
+    margin: 0;
+    text-align:right;
+}
+
+.playvolume {
+    display: flex;
+    
+}
+
+.playbutton button {
+    width: 75px;
+    height: 75px;
+    border-radius: 50px;
+    
+    font-size: x-large; 
+}
+
+.volumecontrol {
+    display: grid;
+    padding: 3px;
+    width: 100%;
+    align-content: center;
+    align-self: center;
+    grid-template-columns: 100%;
+    text-align: right;
+    
+}
+.tempocontrol {
+    display: flex;
+    margin-top: -15px;   
+}
+
+.newlanecontrol input {
+    width:2em;
+}
+.newlanecontrol {
+    text-align: center;
+    margin: 10px;
+}
+
+.temposection {
+    display: grid;
+    grid-template-columns: 100%;
+    width: 100%;
+    align-content: center;
+    align-self: center;
+    text-align: right;
+}
+
+.volumeamount, .bpmamount {
+    font-weight: bold;
+}

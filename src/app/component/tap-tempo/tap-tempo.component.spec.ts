@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClickLaneComponent } from './click-lane.component';
+import { TapTempoComponent } from './tap-tempo.component';
 
-describe('ClickLaneComponent', () => {
-  let component: ClickLaneComponent;
-  let fixture: ComponentFixture<ClickLaneComponent>;
+describe('TapTempoComponent', () => {
+  let component: TapTempoComponent;
+  let fixture: ComponentFixture<TapTempoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClickLaneComponent ]
+      declarations: [ TapTempoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClickLaneComponent);
+    fixture = TestBed.createComponent(TapTempoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

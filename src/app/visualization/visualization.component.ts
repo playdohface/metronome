@@ -16,6 +16,8 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 export class VisualizationComponent implements OnInit, OnChanges {
 
   @Input() subdivisions!:number;
+  @Input() activedefault!:boolean;
+
   @Output() delete$ = new EventEmitter<boolean>();
 
   public soundChoice = new FormGroup({
@@ -96,7 +98,8 @@ export class VisualizationComponent implements OnInit, OnChanges {
   makeButtons():void{
     for (let i = 0; i < this.subdivisions; i++ )
     {
-      this.buttons[i] = {"active":false, "current":false}
+      this.buttons[i] = {"active":this.activedefault, "current":false}
+      this.buttonHandler(i);
     }
   }
 

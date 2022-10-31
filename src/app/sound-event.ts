@@ -14,6 +14,7 @@ export class SoundEvent {
         public isPlayedInLoop(num:number):boolean{
             if (this.lastLoop === -1) return true;
             if (num === this.lastLoop) return false;
+            if (num === this.lastLoop - 1) return false; 
             
             return !(num%this._playEvery)
         }
