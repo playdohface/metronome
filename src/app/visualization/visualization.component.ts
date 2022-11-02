@@ -25,6 +25,8 @@ export class VisualizationComponent implements OnInit, OnChanges {
     playEvery: new FormControl<number>(1)
   })
 
+  public moreoptions = false;
+
   
 
   private _sound:Sound;
@@ -76,6 +78,11 @@ export class VisualizationComponent implements OnInit, OnChanges {
       this.audioEngine.removeSoundEvent(this._getButtonId(i));
     }
     this.delete$.emit(true);
+  }
+
+  public toggleOptions():void{
+    this.moreoptions = !this.moreoptions;
+
   }
 
   public setVolume(newVolume:string):void{

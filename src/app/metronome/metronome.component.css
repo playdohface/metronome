@@ -33,6 +33,8 @@ h1 {
 
 .newlanecontrol input {
     width:2em;
+    font-size: large;
+    text-align: center;
 }
 .newlanecontrol {
     text-align: center;

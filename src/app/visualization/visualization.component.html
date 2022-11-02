@@ -3,13 +3,20 @@
         <button *ngFor="let b of buttons; index as i" (click) = "buttonHandler(i)" [ngClass]="buttons[i]"></button>
     </div>
     <div [formGroup] = "soundChoice" class="soundchoice">
-        
-        <select formControlName="soundSelect">
-            <option *ngFor="let sound of soundList" [ngValue]="sound" >{{sound.name}}</option>
-        </select> 
-        Volume: <input #volumeControl type="range" min="0" max="100" (change)="setVolume(volumeControl.value)">
-        Play Every: <input formControlName = "playEvery">
-        <button (click)="deleteMe()">Delete Lane</button>  
+        <div class="defaultoptions">
+            <span class="soundchoicesection">
+            Sound: 
+            <select formControlName="soundSelect">
+                <option *ngFor="let sound of soundList" [ngValue]="sound" >{{sound.name}}</option>
+            </select> </span>
+            <button (click)="toggleOptions()">{{moreoptions ? "Less Options" : "More Options"}}</button>
+        </div>
+
+        <div *ngIf="moreoptions" class="moreoptions">
+            <div class="volsection">Volume: <input class="volslider" #volumeControl type="range" min="0" max="100" (change)="setVolume(volumeControl.value)"></div>
+            <div>Play Every one out of <input formControlName = "playEvery"> times.</div>
+            <div class="deletebutton"><button (click)="deleteMe()">Delete Lane</button></div>  
+        </div>
     </div>
     
 </div>

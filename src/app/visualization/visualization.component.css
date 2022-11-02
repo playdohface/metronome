@@ -8,13 +8,57 @@
     justify-content: space-between;
     
 }
- button {
+ .buttons button {
     width:100%;
     border: 1px solid black;
     border-radius: 5px;
     margin-right: 1px;;
     
  }
+
+ .defaultoptions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+    font-size:small;
+ }
+
+ .defaultoptions select, .defaultoptions button {
+    font-size: small;
+ }
+
+ .moreoptions{
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+    align-items: center;
+    justify-content: space-around;
+    
+ }
+ .moreoptions .volsection {
+    display:flex;
+    width: 100%;
+    margin: 5px;
+    align-items: center;
+    
+ }
+ .moreoptions .volslider {
+    width: 100%;
+    margin-left: 5px;
+ }
+
+ .moreoptions input {
+    width: 1em;
+    font-size: large;
+    text-align: center;
+ }
+ .moreoptions .deletebutton {
+    justify-self: right;
+    margin: 5px;
+ }
+
+
 
  .active {
     background-color: black;

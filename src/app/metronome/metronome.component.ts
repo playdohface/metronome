@@ -4,6 +4,7 @@ import { SoundEvent } from '../sound-event';
 import { LaneViewDirective } from '../directive/lane-view.directive';
 import { VisualizationComponent } from '../visualization/visualization.component';
 import { AudioEngineService } from '../service/audio-engine.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-metronome',
@@ -12,31 +13,28 @@ import { AudioEngineService } from '../service/audio-engine.service';
 })
 export class MetronomeComponent implements OnInit {
   @ViewChild(LaneViewDirective, {static: true}) laneViews!: LaneViewDirective;
-
-
   audioContext!:AudioContext;
 
-  currentTimeInSeconds = 0;
-  currentBeat = 1;
+  
+  public volumeSlider:number = 75;
+  public tempoSlider:number = 120;
 
-  nextNote:number = 0;
-
-  startTime = 0;
-
+ 
 
 
-  beep:Beep;
+
+
 
   constructor(public ac:AudioEngineService) { 
     
     this.audioContext = ac.audioContext;
 
-    this.beep = new Beep(this.audioContext, this.ac.mainOut, 300, 0.2);
+  
     //ac.currentBeat.subscribe((value) => this.currentBeat = value )
   }
 
   ngOnInit(): void {
-    this.audioContext = this.ac.audioContext;
+    // this.audioContext = this.ac.audioContext;
     this.addNewLane("4",false);
     
   }
@@ -48,10 +46,12 @@ export class MetronomeComponent implements OnInit {
 
   tapTempo(newTempo:number){
     if (newTempo < 30 || newTempo > 400) return;
-    this.ac.bpm = newTempo;
+    this.ac.bpm = Math.round(newTempo);
+    this.tempoSlider = Math.round(newTempo);
   }
 
   setBpm(newBpm:string){
+    
     this.ac.bpm = parseInt(newBpm);
   }
 
@@ -72,11 +72,6 @@ export class MetronomeComponent implements OnInit {
 
   }
 
-  playSound(aCtx:AudioContext, when:number):void{
-    console.log("Play Sound.")
-    this.beep.play(this.audioContext.currentTime);
-  
-  }
 
 
 }

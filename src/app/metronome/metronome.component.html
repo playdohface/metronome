@@ -10,9 +10,9 @@
 
     <div class="volumecontrol">
     <div class = "volumelabel">Main Volume:
-        <span class = "volumeamount">{{ac.mainVolume*100}}%</span>
+        <span class = "volumeamount">{{volumeSlider}}%</span>
     </div>
-    <input class="volumeslider" #mainVolume type="range" min="0" max="100" (change)="setVolume(mainVolume.value)" [value]="ac.mainVolume*100"><br>
+    <input class="volumeslider" #mainVolume type="range" min="0" max="100" (change)="setVolume(mainVolume.value)" [(ngModel)]="volumeSlider"><br>
     </div>
 </div>
 
@@ -20,8 +20,8 @@
     <app-tap-tempo (newTempo)="tapTempo($event)"></app-tap-tempo>
 
     <div class="temposection">
-        <div class="tempolabel">Tempo: <span class="bpmamount">{{ac.bpm}} bpm</span></div>
-        <input #bpmSlider type="range" min="30" max="400" (change)="setBpm(bpmSlider.value)" [value]="ac.bpm">
+        <div class="tempolabel">Tempo: <span class="bpmamount">{{tempoSlider}} bpm</span></div>
+        <input #bpmSlider type="range" min="30" max="400" (change)="setBpm(bpmSlider.value)" [(ngModel)] = "tempoSlider">
     </div>
 
 </div>
