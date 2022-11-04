@@ -37,6 +37,10 @@ export class AudioEngineService {
 
    public set bpm(newBpm:number){
     this._loopTime = 60/(newBpm/4);
+    if (this.isPlaying) {
+      this.stop();
+      this.play();
+    }
     
    }
 
