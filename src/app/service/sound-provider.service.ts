@@ -9,20 +9,17 @@ import { FileLoaderService } from './file-loader.service';
   providedIn: 'root'
 })
 export class SoundProviderService {
-  // private _soundList:Sound[] = [
-  //   new Beep(this.ac.audioContext,this.ac.mainOut,600,0.05,"High Beep"),
-  //   new Beep(this.ac.audioContext,this.ac.mainOut,400,0.05,"Mid Beep"),
-  //   new Beep(this.ac.audioContext,this.ac.mainOut,200,0.05,"Low Beep")
-  // ];
+
 
   constructor(private ac:AudioEngineService, private loader:FileLoaderService) { }
 
   public makeSoundInstances(){
     return [
+      new SoundFile(this.loader,"assets/sound/CLICK.WAV", this.ac.audioContext,this.ac.mainOut, "Click"),
       new Beep(this.ac.audioContext,this.ac.mainOut,600,0.05,"High Beep"),
       new Beep(this.ac.audioContext,this.ac.mainOut,400,0.05,"Mid Beep"),
       new Beep(this.ac.audioContext,this.ac.mainOut,200,0.05,"Low Beep"),
-      new SoundFile(this.loader,"assets/sound/CLICK.WAV", this.ac.audioContext,this.ac.mainOut, "Click")
+      
     ];
 
   }

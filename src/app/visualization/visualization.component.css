@@ -1,4 +1,12 @@
 
+.container {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dotted grey;
+    
+}
+
+
 .buttons {
     
     height: 50px;

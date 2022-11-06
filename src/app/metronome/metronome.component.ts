@@ -14,27 +14,16 @@ import { FormsModule } from '@angular/forms';
 export class MetronomeComponent implements OnInit {
   @ViewChild(LaneViewDirective, {static: true}) laneViews!: LaneViewDirective;
   audioContext!:AudioContext;
-
-  
+ 
   public volumeSlider:number = 75;
   public tempoSlider:number = 120;
-
- 
-
-
-
-
 
   constructor(public ac:AudioEngineService) { 
     
     this.audioContext = ac.audioContext;
-
-  
-    //ac.currentBeat.subscribe((value) => this.currentBeat = value )
   }
 
   ngOnInit(): void {
-    // this.audioContext = this.ac.audioContext;
     this.addNewLane("4",false);
     
   }
@@ -67,9 +56,6 @@ export class MetronomeComponent implements OnInit {
       }
     })
     
-    
-    //componentRef.instance.buttonStates.subscribe((e) => this.registerSoundEvents(e));
-
   }
 
 

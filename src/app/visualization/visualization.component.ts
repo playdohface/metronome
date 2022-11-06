@@ -6,6 +6,7 @@ import { SoundEvent } from '../sound-event';
 import { v4 } from 'uuid';
 import { SoundProviderService } from '../service/sound-provider.service';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class VisualizationComponent implements OnInit, OnChanges {
   private _volumeNode:GainNode;
   private _playEvery:number = 1;
 
+  private soundchoicesubscription!:Subscription;
+
 
 
   buttons = [{"active" : false, "current" : false}];
@@ -59,7 +62,7 @@ export class VisualizationComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {      
     this.makeButtons();   
-    this.soundChoice.valueChanges.subscribe((newVal) => {
+    this.soundchoicesubscription = this.soundChoice.valueChanges.subscribe((newVal) => {
       this._playEvery = newVal.playEvery ? newVal.playEvery : this._playEvery;
       this.selectSound(newVal.soundSelect);
     });
@@ -71,6 +74,7 @@ export class VisualizationComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(){   
+    this.soundchoicesubscription.unsubscribe();
   }
 
   public deleteMe():void {
