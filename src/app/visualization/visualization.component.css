@@ -34,6 +34,9 @@
 
  .defaultoptions select, .defaultoptions button {
     font-size: small;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
  }
 
  .moreoptions{
@@ -64,9 +67,15 @@
  .moreoptions .deletebutton {
     justify-self: right;
     margin: 5px;
+    
  }
 
-
+ .moreoptions .deletebutton button {
+   padding: 5px;
+   border: 1px solid black;
+   border-radius: 5px;
+ }
+   
 
  .active {
     background-color: black;

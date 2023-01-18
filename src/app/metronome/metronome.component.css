@@ -8,11 +8,19 @@ h1 {
     
 }
 
+.newlanecontrol button {
+    padding: 7px;
+    border-radius: 5px;
+    border: 1px solid black;
+
+}
 
 .playbutton button {
     width: 75px;
     height: 75px;
     border-radius: 50px;
+    border: 1px solid black;
+
     
     font-size: x-large; 
 }
