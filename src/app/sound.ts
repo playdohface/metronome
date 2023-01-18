@@ -1,5 +1,5 @@
 export interface Sound {
     play(startTime:number):void;
     name:string;
-    set outputNode(newOut:AudioNode)
+    set outputNode(newOut:AudioNode);
 }

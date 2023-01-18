@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Beep } from '../class/beep';
 import { SoundFile } from '../class/sound-file';
-import { Sound } from '../sound';
 import { AudioEngineService } from './audio-engine.service';
 import { FileLoaderService } from './file-loader.service';
 

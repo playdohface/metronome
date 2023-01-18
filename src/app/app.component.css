@@ -1,0 +1,14 @@
+.mainwrapper {
+    max-width: 500px;
+    border: 5px solid black;
+    background-color: white;
+    padding: 20px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.outside {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}

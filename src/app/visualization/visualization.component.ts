@@ -28,8 +28,6 @@ export class VisualizationComponent implements OnInit, OnChanges {
 
   public moreoptions = false;
 
-  
-
   private _sound:Sound;
   private _soundList: Sound[];
   private _globalId = v4();

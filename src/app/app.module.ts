@@ -13,6 +13,7 @@ import { AudioEngineService } from './service/audio-engine.service';
 import { SoundProviderService } from './service/sound-provider.service';
 import { TapTempoComponent } from './component/tap-tempo/tap-tempo.component';
 import { FileLoaderService } from './service/file-loader.service';
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { FileLoaderService } from './service/file-loader.service';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    IonicModule.forRoot()
   ],
   providers: [AudioEngineService, SoundProviderService, FileLoaderService],
   bootstrap: [AppComponent]
